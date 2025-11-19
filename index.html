@@ -204,6 +204,7 @@
         <button onclick="modoChino()">CHINO</button>
         <button onclick="modoEspanol()">ESPAÑOL</button>
         <button onclick="comprobar()">Comprobar</button>
+        <button onclick="escucharFraseActual()">Escuchar frase</button>
         <button onclick="togglePanelFrases()">Frases</button>
         <button onclick="exportarHistorial()">Exportar historial</button>
     </div>
@@ -783,6 +784,32 @@
             URL.revokeObjectURL(url);
         }
 
+        // ---- NUEVO: síntesis de voz para escuchar la frase en chino ----
+        function hablar(texto) {
+            if (!("speechSynthesis" in window)) {
+                alert("Este navegador no soporta reproducción de voz.");
+                return;
+            }
+            if (!texto) {
+                alert("No hay texto en chino para esta frase.");
+                return;
+            }
+            // Parar cualquier locución en curso
+            window.speechSynthesis.cancel();
+
+            const u = new SpeechSynthesisUtterance(texto);
+            u.lang = "zh-CN";   // Mandarín estándar
+            u.rate = 0.9;       // Un poco más lento para facilitar el aprendizaje
+            window.speechSynthesis.speak(u);
+        }
+
+        function escucharFraseActual() {
+            if (!frases.length) return;
+            const f = frases[indice];
+            hablar(f.hanzi);
+        }
+        // ---------------------------------------------------------------
+
         // Registro del service worker (PWA)
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker.register("service-worker.js").catch(err => {
@@ -794,6 +821,3 @@
     </script>
 </body>
 </html>
-
-
-
