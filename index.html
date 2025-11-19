@@ -255,24 +255,123 @@
     <script>
         const STORAGE_KEY = "aprendeChino_frases_pwa_v1";
 
-        let frases = [
-            {
-                hanzi: "你好，我们刚到中国。",
-                pinyin: "Nǐ hǎo, wǒmen gāng dào Zhōngguó.",
-                espanol: "Hola, acabamos de llegar a China."
-            },
-            {
-                hanzi: "谢谢，请问在哪里可以打车？",
-                pinyin: "Xièxie, qǐngwèn zài nǎli kěyǐ dǎchē?",
-                espanol: "Gracias, disculpe, ¿dónde puedo coger un taxi?"
-            },
-            {
-                hanzi: "请问，这里怎么走？",
-                pinyin: "Qǐngwèn, zhèlǐ zěnme zǒu?",
-                espanol: "Disculpe, ¿cómo se va a este sitio?"
-            }
-        ];
+        let frases = [let frases = [
+    /* =======================
+       50 FRASES COTIDIANAS
+       ======================= */
+    { hanzi:"你好。", pinyin:"Nǐ hǎo.", espanol:"Hola." },
+    { hanzi:"谢谢。", pinyin:"Xièxie.", espanol:"Gracias." },
+    { hanzi:"对不起。", pinyin:"Duìbuqǐ.", espanol:"Perdón." },
+    { hanzi:"请问，厕所在哪里？", pinyin:"Qǐngwèn, cèsuǒ zài nǎlǐ?", espanol:"Disculpe, ¿dónde está el baño?" },
+    { hanzi:"我听不懂。", pinyin:"Wǒ tīng bù dǒng.", espanol:"No entiendo." },
+    { hanzi:"你可以说慢一点吗？", pinyin:"Nǐ kěyǐ shuō màn yìdiǎn ma?", espanol:"¿Puedes hablar más despacio?" },
+    { hanzi:"这是什么意思？", pinyin:"Zhè shì shénme yìsi?", espanol:"¿Qué significa esto?" },
+    { hanzi:"我会一点中文。", pinyin:"Wǒ huì yìdiǎn Zhōngwén.", espanol:"Sé un poco de chino." },
+    { hanzi:"请再说一遍。", pinyin:"Qǐng zài shuō yí biàn.", espanol:"Por favor, repítelo." },
+    { hanzi:"可以帮我吗？", pinyin:"Kěyǐ bāng wǒ ma?", espanol:"¿Puedes ayudarme?" },
 
+    { hanzi:"我想去地铁站。", pinyin:"Wǒ xiǎng qù dìtiě zhàn.", espanol:"Quiero ir a la estación de metro." },
+    { hanzi:"出租车在哪里？", pinyin:"Chūzūchē zài nǎlǐ?", espanol:"¿Dónde están los taxis?" },
+    { hanzi:"请带我去机场。", pinyin:"Qǐng dài wǒ qù jīchǎng.", espanol:"Lléveme al aeropuerto." },
+    { hanzi:"这里怎么走？", pinyin:"Zhèlǐ zěnme zǒu?", espanol:"¿Cómo se va desde aquí?" },
+    { hanzi:"我要去这个地址。", pinyin:"Wǒ yào qù zhège dìzhǐ.", espanol:"Quiero ir a esta dirección." },
+    { hanzi:"到那里要多长时间？", pinyin:"Dào nàlǐ yào duō cháng shíjiān?", espanol:"¿Cuánto tiempo se tarda?" },
+    { hanzi:"请给我看地图。", pinyin:"Qǐng gěi wǒ kàn dìtú.", espanol:"Enséñeme el mapa." },
+    { hanzi:"我们刚到中国。", pinyin:"Wǒmen gāng dào Zhōngguó.", espanol:"Acabamos de llegar a China." },
+    { hanzi:"请帮我叫一辆车。", pinyin:"Qǐng bāng wǒ jiào yí liàng chē.", espanol:"Ayúdeme a pedir un coche." },
+    { hanzi:"这是去市中心的吗？", pinyin:"Zhè shì qù shìzhōngxīn de ma?", espanol:"¿Esto va al centro?" },
+
+    { hanzi:"我想要一瓶水。", pinyin:"Wǒ xiǎng yào yì píng shuǐ.", espanol:"Quiero una botella de agua." },
+    { hanzi:"这个多少钱？", pinyin:"Zhège duōshǎo qián?", espanol:"¿Cuánto cuesta esto?" },
+    { hanzi:"可以刷卡吗？", pinyin:"Kěyǐ shuākǎ ma?", espanol:"¿Puedo pagar con tarjeta?" },
+    { hanzi:"请推荐一下。", pinyin:"Qǐng tuījiàn yíxià.", espanol:"Recomiéndeme algo." },
+    { hanzi:"我对这个过敏。", pinyin:"Wǒ duì zhège guòmǐn.", espanol:"Soy alérgico a esto." },
+    { hanzi:"我可以试试吗？", pinyin:"Wǒ kěyǐ shìshi ma?", espanol:"¿Puedo probarlo?" },
+    { hanzi:"我要一个不辣的。", pinyin:"Wǒ yào yí gè bú là de.", espanol:"Lo quiero sin picante." },
+    { hanzi:"味道很好。", pinyin:"Wèidào hěn hǎo.", espanol:"Está muy rico." },
+    { hanzi:"请给我发票。", pinyin:"Qǐng gěi wǒ fāpiào.", espanol:"Deme un recibo." },
+    { hanzi:"可以坐这里吗？", pinyin:"Kěyǐ zuò zhèlǐ ma?", espanol:"¿Puedo sentarme aquí?" },
+
+    { hanzi:"我需要一间安静的房间。", pinyin:"Wǒ xūyào yì jiān ānjìng de fángjiān.", espanol:"Necesito una habitación tranquila." },
+    { hanzi:"我已经预订了。", pinyin:"Wǒ yǐjīng yùdìng le.", espanol:"Ya he reservado." },
+    { hanzi:"空调不能用。", pinyin:"Kōngtiáo bù néng yòng.", espanol:"El aire acondicionado no funciona." },
+    { hanzi:"请帮我叫服务员。", pinyin:"Qǐng bāng wǒ jiào fúwùyuán.", espanol:"Llame al camarero, por favor." },
+    { hanzi:"我找不到我的房卡。", pinyin:"Wǒ zhǎo bù dào wǒ de fángkǎ.", espanol:"No encuentro mi tarjeta." },
+    { hanzi:"可以帮我换一下房间吗？", pinyin:"Kěyǐ bāng wǒ huàn yíxià fángjiān ma?", espanol:"¿Puedo cambiar de habitación?" },
+    { hanzi:"请明天早上叫醒我。", pinyin:"Qǐng míngtiān zǎoshang jiàoxǐng wǒ.", espanol:"Despiérteme mañana temprano." },
+    { hanzi:"我需要一辆出租车。", pinyin:"Wǒ xūyào yí liàng chūzūchē.", espanol:"Necesito un taxi." },
+    { hanzi:"网络有问题。", pinyin:"Wǎngluò yǒu wèntí.", espanol:"La red tiene un problema." },
+    { hanzi:"可以帮我打印文件吗？", pinyin:"Kěyǐ bāng wǒ dǎyìn wénjiàn ma?", espanol:"¿Puedes imprimirme un documento?" },
+
+    { hanzi:"我觉得这里很方便。", pinyin:"Wǒ juéde zhèlǐ hěn fāngbiàn.", espanol:"Creo que este lugar es práctico." },
+    { hanzi:"你喜欢中国菜吗？", pinyin:"Nǐ xǐhuān Zhōngguó cài ma?", espanol:"¿Te gusta la comida china?" },
+    { hanzi:"我还没吃早饭。", pinyin:"Wǒ hái méi chī zǎofàn.", espanol:"Aún no he desayunado." },
+    { hanzi:"我们可以一起去吗？", pinyin:"Wǒmen kěyǐ yìqǐ qù ma?", espanol:"¿Podemos ir juntos?" },
+    { hanzi:"今天比昨天更冷。", pinyin:"Jīntiān bǐ zuótiān gèng lěng.", espanol:"Hoy hace más frío que ayer." },
+    { hanzi:"我想多练习中文。", pinyin:"Wǒ xiǎng duō liànxí Zhōngwén.", espanol:"Quiero practicar más chino." },
+    { hanzi:"你可以推荐一个地方吗？", pinyin:"Nǐ kěyǐ tuījiàn yí gè dìfāng ma?", espanol:"¿Puedes recomendarme un sitio?" },
+    { hanzi:"我很喜欢这个城市。", pinyin:"Wǒ hěn xǐhuān zhège chéngshì.", espanol:"Me gusta mucho esta ciudad." },
+    { hanzi:"我们几点出发？", pinyin:"Wǒmen jǐ diǎn chūfā?", espanol:"¿A qué hora salimos?" },
+    { hanzi:"希望今天顺利。", pinyin:"Xīwàng jīntiān shùnlì.", espanol:"Espero que hoy vaya bien." },
+
+    /* =======================
+       50 FRASES PROFESIONALES
+       ======================= */
+    { hanzi:"我是安东尼奥。", pinyin:"Wǒ shì Āndōngní'ào.", espanol:"Soy Antonio." },
+    { hanzi:"很高兴认识您。", pinyin:"Hěn gāoxìng rènshí nín.", espanol:"Encantado de conocerle." },
+    { hanzi:"谢谢史教授的邀请。", pinyin:"Xièxie Shǐ jiàoshòu de yāoqǐng.", espanol:"Gracias por la invitación, Profesor Shi." },
+    { hanzi:"我来自塞维利亚大学。", pinyin:"Wǒ láizì Sàiwéilìyà Dàxué.", espanol:"Vengo de la Universidad de Sevilla." },
+    { hanzi:"我们研究建筑可持续性。", pinyin:"Wǒmen yánjiū jiànzhù kěchíxùxìng.", espanol:"Investigamos la sostenibilidad en edificios." },
+    { hanzi:"今天我想介绍我们的工作。", pinyin:"Jīntiān wǒ xiǎng jièshào wǒmen de gōngzuò.", espanol:"Hoy quiero presentar nuestro trabajo." },
+    { hanzi:"希望我们能加强合作。", pinyin:"Xīwàng wǒmen néng jiāqiáng hézuò.", espanol:"Espero que podamos fortalecer la colaboración." },
+    { hanzi:"请问现在方便讨论吗？", pinyin:"Qǐngwèn xiànzài fāngbiàn tǎolùn ma?", espanol:"¿Es buen momento para hablar?" },
+    { hanzi:"这个项目对我们很重要。", pinyin:"Zhège xiàngmù duì wǒmen hěn zhòngyào.", espanol:"Este proyecto es muy importante para nosotros." },
+    { hanzi:"我们可以从数据开始吗？", pinyin:"Wǒmen kěyǐ cóng shùjù kāishǐ ma?", espanol:"¿Podemos empezar hablando de los datos?" },
+
+    { hanzi:"我们在研究建筑信息模型。", pinyin:"Wǒmen zài yánjiū jiànzhù xìnxī móxíng.", espanol:"Estamos investigando BIM." },
+    { hanzi:"我们需要可靠的数据。", pinyin:"Wǒmen xūyào kěkào de shùjù.", espanol:"Necesitamos datos fiables." },
+    { hanzi:"中国的数据非常有价值。", pinyin:"Zhōngguó de shùjù fēicháng yǒu jiàzhí.", espanol:"Los datos de China son muy valiosos." },
+    { hanzi:"我们想了解您的数据流程。", pinyin:"Wǒmen xiǎng liǎojiě nín de shùjù liúchéng.", espanol:"Queremos conocer su flujo de datos." },
+    { hanzi:"这个系统支持数据共享吗？", pinyin:"Zhège xìtǒng zhīchí shùjù gòngxiǎng ma?", espanol:"¿Este sistema permite compartir datos?" },
+    { hanzi:"我们正在开发一个数字化工具。", pinyin:"Wǒmen zhèngzài kāifā yí gè shùzìhuà gōngjù.", espanol:"Estamos desarrollando una herramienta digital." },
+    { hanzi:"这是我们最近的数据平台。", pinyin:"Zhè shì wǒmen zuìjìn de shùjù píngtái.", espanol:"Esta es nuestra plataforma de datos más reciente." },
+    { hanzi:"您使用什么BIM标准？", pinyin:"Nín shǐyòng shénme BIM biāozhǔn?", espanol:"¿Qué estándares BIM utiliza?" },
+    { hanzi:"这个模型可以自动计算吗？", pinyin:"Zhège móxíng kěyǐ zìdòng jìsuàn ma?", espanol:"¿El modelo puede calcular automáticamente?" },
+    { hanzi:"我想看看您的示例项目。", pinyin:"Wǒ xiǎng kànkan nín de shìlì xiàngmù.", espanol:"Me gustaría ver sus proyectos de ejemplo." },
+
+    { hanzi:"我们正在做生命周期分析。", pinyin:"Wǒmen zhèngzài zuò shēngmìng zhōuqī fēnxī.", espanol:"Estamos haciendo análisis de ciclo de vida." },
+    { hanzi:"我们的方法基于欧洲标准。", pinyin:"Wǒmen de fāngfǎ jīyú Ōuzhōu biāozhǔn.", espanol:"Nuestro método se basa en estándares europeos." },
+    { hanzi:"中国有哪些相关标准？", pinyin:"Zhōngguó yǒu nǎxiē xiāngguān biāozhǔn?", espanol:"¿Qué estándares existen en China?" },
+    { hanzi:"我们比较了不同的碳排放模型。", pinyin:"Wǒmen bǐjiào le bùtóng de tàn páifàng móxíng.", espanol:"Hemos comparado distintos modelos de emisiones." },
+    { hanzi:"您怎么看待基线数据？", pinyin:"Nín zěnme kàndài jīxiàn shùjù?", espanol:"¿Cómo ve los datos de línea base?" },
+    { hanzi:"我们正在创建全国数据库。", pinyin:"Wǒmen zhèngzài chuàngjiàn quánguó shùjùkù.", espanol:"Estamos creando una base de datos nacional." },
+    { hanzi:"哪些数据最难收集？", pinyin:"Nǎxiē shùjù zuì nán shōují?", espanol:"¿Qué datos son los más difíciles de recolectar?" },
+    { hanzi:"我们也在做建筑碳足迹研究。", pinyin:"Wǒmen yě zài zuò jiànzhù tànzújì yánjiū.", espanol:"También estudiamos huella de carbono de edificios." },
+    { hanzi:"这个材料的影响大吗？", pinyin:"Zhège cáiliào de yǐngxiǎng dà ma?", espanol:"¿El impacto de este material es grande?" },
+    { hanzi:"能给我们一些建议吗？", pinyin:"Néng gěi wǒmen yìxiē jiànyì ma?", espanol:"¿Puede darnos algunas recomendaciones?" },
+
+    { hanzi:"我们在开发建筑数字护照。", pinyin:"Wǒmen zài kāifā jiànzhù shùzì hùzhào.", espanol:"Estamos desarrollando un pasaporte digital." },
+    { hanzi:"核心是数据可追溯性。", pinyin:"Héxīn shì shùjù kě zhuīsùxìng.", espanol:"Lo esencial es la trazabilidad de datos." },
+    { hanzi:"材料信息必须可验证。", pinyin:"Cáiliào xìnxī bìxū kě yànzhèng.", espanol:"La información de materiales debe ser verificable." },
+    { hanzi:"我们需要实时数据。", pinyin:"Wǒmen xūyào shíshí shùjù.", espanol:"Necesitamos datos en tiempo real." },
+    { hanzi:"您有类似的数字项目吗？", pinyin:"Nín yǒu lèisì de shùzì xiàngmù ma?", espanol:"¿Tiene proyectos digitales similares?" },
+    { hanzi:"流程能自动同步吗？", pinyin:"Liúchéng néng zìdòng tóngbù ma?", espanol:"¿El proceso puede sincronizarse automáticamente?" },
+    { hanzi:"我们比较不同的数据格式。", pinyin:"Wǒmen bǐjiào bùtóng de shùjù géshì.", espanol:"Comparamos distintos formatos de datos." },
+    { hanzi:"可以提供样本数据吗？", pinyin:"Kěyǐ tígōng yàngběn shùjù ma?", espanol:"¿Puede facilitar datos de muestra?" },
+    { hanzi:"我们关心数据一致性。", pinyin:"Wǒmen guānxīn shùjù yízhìxìng.", espanol:"Nos importa la coherencia de los datos." },
+    { hanzi:"平台支持开放标准吗？", pinyin:"Píngtái zhīchí kāifàng biāozhǔn ma?", espanol:"¿La plataforma admite estándares abiertos?" },
+
+    { hanzi:"我们想与您的团队长期合作。", pinyin:"Wǒmen xiǎng yǔ nín de tuánduì chángqī hézuò.", espanol:"Queremos colaborar a largo plazo con su equipo." },
+    { hanzi:"我们可以共同开发一个模型。", pinyin:"Wǒmen kěyǐ gòngtóng kāifā yí gè móxíng.", espanol:"Podemos desarrollar un modelo conjunto." },
+    { hanzi:"我想了解您在数字化方面的经验。", pinyin:"Wǒ xiǎng liǎojiě nín zài shùzìhuà fāngmiàn de jīngyàn.", espanol:"Quiero conocer su experiencia en digitalización." },
+    { hanzi:"这是我们最近的研究成果。", pinyin:"Zhè shì wǒmen zuìjìn de yánjiū chéngguǒ.", espanol:"Estos son nuestros resultados más recientes." },
+    { hanzi:"这项技术可以提高准确性。", pinyin:"Zhè xiàng jìshù kěyǐ tígāo zhǔnquèxìng.", espanol:"Esta tecnología mejora la precisión." },
+    { hanzi:"我们想讨论跨国数据合作。", pinyin:"Wǒmen xiǎng tǎolùn kuàguó shùjù hézuò.", espanol:"Queremos discutir cooperación internacional de datos." },
+    { hanzi:"您怎么看待数据透明度？", pinyin:"Nín zěnme kàndài shùjù tòumíngdù?", espanol:"¿Qué opina sobre la transparencia de datos?" },
+    { hanzi:"可以安排一次技术会议吗？", pinyin:"Kěyǐ ānpái yí cì jìshù huìyì ma?", espanol:"¿Podemos organizar una reunión técnica?" },
+    { hanzi:"非常感谢史教授的指导。", pinyin:"Fēicháng gǎnxiè Shǐ jiàoshòu de zhǐdǎo.", espanol:"Gracias por su orientación, Profesor Shi." },
+    { hanzi:"希望未来我们合作顺利。", pinyin:"Xīwàng wèilái wǒmen hézuò shùnlì.", espanol:"Espero que nuestra colaboración sea exitosa." }
+];
         let indice = 0;
         let modo = "TODAS";
 
@@ -695,3 +794,4 @@
     </script>
 </body>
 </html>
+
