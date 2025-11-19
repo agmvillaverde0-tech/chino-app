@@ -1,6 +1,6 @@
 {
-  "name": "Aprender chino",
-  "short_name": "Chino",
+  "name": "Chino personalizado para Antonio García Martínez",
+  "short_name": "Chino Antonio",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -18,3 +18,4 @@
     }
   ]
 }
+
