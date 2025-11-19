@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Aprender chino</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <style>
+        :root {
+            font-size: 16px;
+        }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+            margin: 0;
+            padding: 0.75rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            box-sizing: border-box;
+        }
+        h1 {
+            text-align: center;
+            font-size: 1.4rem;
+            margin: 0.5rem 0 1rem;
+        }
+        .fila {
+            margin-bottom: 0.75rem;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        input[type="text"],
+        textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0.4rem 0.5rem;
+            font-size: 1rem;
+        }
+        button {
+            padding: 0.5rem 0.75rem;
+            margin: 0.15rem;
+            font-size: 0.95rem;
+            border-radius: 4px;
+            border: 1px solid #888;
+            background: #f4f4f4;
+        }
+        button:active {
+            background: #ddd;
+        }
+        .botonera-principal {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+        }
+        .botonera-principal button {
+            flex: 1 1 45%;
+        }
+        .solucion {
+            background-color: #eef;
+            padding: 0.35rem;
+            margin-top: 0.25rem;
+            min-height: 1.1rem;
+            font-size: 0.9rem;
+        }
+        .modo {
+            margin-bottom: 0.5rem;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+        hr {
+            margin: 0.9rem 0;
+        }
+        .estado-frase {
+            font-size: 0.85rem;
+            color: #333;
+        }
+        #panelFrases {
+            margin-top: 0.75rem;
+            padding: 0.5rem;
+            border: 1px solid #bbb;
+            background-color: #f9f9f9;
+        }
+        #panelFrases h2 {
+            margin-top: 0;
+            font-size: 1.1rem;
+        }
+        #panelFrases p {
+            font-size: 0.85rem;
+        }
+        .tabla-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 600px;
+            font-size: 0.85rem;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 0.25rem;
+            text-align: left;
+        }
+        th {
+            background-color: #ddd;
+        }
+        .inputTabla {
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 0.85rem;
+        }
+        .form-nueva-frase input {
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 0.9rem;
+            padding: 0.3rem 0.4rem;
+        }
+        .fila-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.35rem;
+            flex-wrap: wrap;
+        }
+        .fila-top span {
+            font-size: 0.95rem;
+        }
+        @media (min-width: 600px) {
+            .botonera-principal button {
+                flex: 0 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Aprender chino</h1>
+
+    <div class="modo" id="modoTexto"></div>
+
+    <div class="fila fila-top">
+        <div>
+            <strong>Frase nº: </strong><span id="indiceFrase"></span>
+        </div>
+        <div>
+            <button onclick="anteriorFrase()">Anterior</button>
+            <button onclick="siguienteFrase()">Siguiente</button>
+        </div>
+    </div>
+
+    <div class="fila">
+        <label>Hanzi (modelo):</label>
+        <span id="hanziModelo"></span>
+    </div>
+
+    <div class="fila">
+        <label>Pinyin (modelo):</label>
+        <span id="pinyinModelo"></span>
+    </div>
+
+    <div class="fila">
+        <label>Español (modelo):</label>
+        <span id="espanolModelo"></span>
+    </div>
+
+    <div class="fila">
+        <label>Estado de la frase:</label>
+        <div id="estadoFrase" class="estado-frase"></div>
+    </div>
+
+    <hr>
+
+    <div class="fila">
+        <label>Hanzi (tu respuesta):</label>
+        <input type="text" id="hanziUsuario">
+        <div class="solucion" id="resultadoHanzi"></div>
+    </div>
+
+    <div class="fila">
+        <label>Pinyin (tu respuesta):</label>
+        <input type="text" id="pinyinUsuario" placeholder="Escribe pinyin con números (ej: ni3 hao3)">
+        <div class="solucion" id="resultadoPinyin"></div>
+    </div>
+
+    <div class="fila">
+        <label>Español (tu respuesta):</label>
+        <textarea id="espanolUsuario" rows="2"></textarea>
+        <div class="solucion" id="resultadoEspanol"></div>
+    </div>
+
+    <hr>
+
+    <div class="fila botonera-principal">
+        <button onclick="modoTodas()">TODAS</button>
+        <button onclick="modoClean()">CLEAN</button>
+        <button onclick="modoChino()">CHINO</button>
+        <button onclick="modoEspanol()">ESPAÑOL</button>
+        <button onclick="comprobar()">Comprobar</button>
+        <button onclick="togglePanelFrases()">Frases</button>
+        <button onclick="exportarHistorial()">Exportar historial</button>
+    </div>
+
+    <div id="panelFrases" style="display:none;">
+        <h2>Frases del ejercicio</h2>
+        <p>
+            Aquí puedes ver, editar y añadir frases.  
+            Se registran prácticas, completaciones y si están aprendidas semanal y mensualmente.
+        </p>
+        <div class="tabla-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Hanzi</th>
+                        <th>Pinyin</th>
+                        <th>Español</th>
+                        <th>Última práctica</th>
+                        <th>Último completado</th>
+                        <th>Aprendido semanal</th>
+                        <th>Aprendido mensual</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaFrasesBody"></tbody>
+            </table>
+        </div>
+
+        <div class="form-nueva-frase">
+            <h3>Añadir nueva frase</h3>
+            <table>
+                <tr>
+                    <td>Hanzi</td>
+                    <td><input type="text" id="nuevoHanzi"></td>
+                </tr>
+                <tr>
+                    <td>Pinyin</td>
+                    <td><input type="text" id="nuevoPinyin" placeholder="Con tonos (Zhōngguó...)"></td>
+                </tr>
+                <tr>
+                    <td>Español</td>
+                    <td><input type="text" id="nuevoEspanol"></td>
+                </tr>
+            </table>
+            <button onclick="anadirFrase()">Añadir frase</button>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = "aprendeChino_frases_pwa_v1";
+
+        let frases = [
+            {
+                hanzi: "你好，我们刚到中国。",
+                pinyin: "Nǐ hǎo, wǒmen gāng dào Zhōngguó.",
+                espanol: "Hola, acabamos de llegar a China."
+            },
+            {
+                hanzi: "谢谢，请问在哪里可以打车？",
+                pinyin: "Xièxie, qǐngwèn zài nǎli kěyǐ dǎchē?",
+                espanol: "Gracias, disculpe, ¿dónde puedo coger un taxi?"
+            },
+            {
+                hanzi: "请问，这里怎么走？",
+                pinyin: "Qǐngwèn, zhèlǐ zěnme zǒu?",
+                espanol: "Disculpe, ¿cómo se va a este sitio?"
+            }
+        ];
+
+        let indice = 0;
+        let modo = "TODAS";
+
+        function normalizarEstructuraFrases() {
+            frases = frases.map(f => ({
+                hanzi: f.hanzi || "",
+                pinyin: f.pinyin || "",
+                espanol: f.espanol || "",
+                attempts: f.attempts || [],
+                completions: f.completions || [],
+                weeklyMastered: f.weeklyMastered || null,
+                monthlyMastered: f.monthlyMastered || null,
+                chinoDone: f.chinoDone || false,
+                espanolDone: f.espanolDone || false
+            }));
+        }
+
+        const guardado = localStorage.getItem(STORAGE_KEY);
+        if (guardado) {
+            try {
+                frases = JSON.parse(guardado);
+            } catch (e) {
+                console.error("Error al cargar datos guardados, se usará la lista por defecto.");
+            }
+        }
+        normalizarEstructuraFrases();
+
+        function guardarFrases() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(frases));
+        }
+
+        function numericToMarkedPinyin(text) {
+            const toneMarks = {
+                'a': ['ā','á','ǎ','à'],
+                'e': ['ē','é','ě','è'],
+                'i': ['ī','í','ǐ','ì'],
+                'o': ['ō','ó','ǒ','ò'],
+                'u': ['ū','ú','ǔ','ù'],
+                'ü': ['ǖ','ǘ','ǚ','ǜ']
+            };
+
+            function applySyllable(match, base, toneDigit) {
+                let tone = parseInt(toneDigit, 10);
+                if (tone === 5 || tone === 0) return base;
+
+                base = base.toLowerCase().replace(/v/g, "ü");
+
+                let idx = -1;
+                for (const ch of ['a','o','e']) {
+                    const pos = base.indexOf(ch);
+                    if (pos !== -1) { idx = pos; break; }
+                }
+
+                if (idx === -1) {
+                    if (base.includes("iu")) idx = base.indexOf("u");
+                    else if (base.includes("ui")) idx = base.indexOf("i");
+                }
+
+                if (idx === -1) {
+                    for (let i = base.length - 1; i >= 0; i--) {
+                        if ("aeiouü".includes(base[i])) { idx = i; break; }
+                    }
+                }
+
+                if (idx === -1) return base;
+
+                const ch = base[idx];
+                const mark = toneMarks[ch][tone - 1];
+                return base.slice(0, idx) + mark + base.slice(idx + 1);
+            }
+
+            return text.replace(/([A-Za-züv]+)([1-5])/g, applySyllable);
+        }
+
+        function normalizarPinyin(t) {
+            return t.trim().replace(/\s+/g, " ").toLowerCase();
+        }
+
+        function formatDateTime(ts) {
+            if (!ts) return "";
+            const d = new Date(ts);
+            if (isNaN(d.getTime())) return ts;
+            return d.toLocaleString("es-ES");
+        }
+
+        function estadoFraseTexto(f) {
+            const lastAttempt = f.attempts.length ? f.attempts[f.attempts.length - 1] : null;
+            const lastCompletion = f.completions.length ? f.completions[f.completions.length - 1] : null;
+
+            let partes = [];
+            if (lastAttempt) {
+                partes.push("Última práctica: " + formatDateTime(lastAttempt));
+            } else {
+                partes.push("Sin práctica registrada.");
+            }
+            if (lastCompletion) {
+                partes.push("Último completado: " + formatDateTime(lastCompletion));
+            }
+            if (f.weeklyMastered) {
+                partes.push("Aprendida semanal: " + formatDateTime(f.weeklyMastered));
+            }
+            if (f.monthlyMastered) {
+                partes.push("Aprendida mensual: " + formatDateTime(f.monthlyMastered));
+            }
+            return partes.join(" | ");
+        }
+
+        function mostrarFrase() {
+            const idxSpan = document.getElementById("indiceFrase");
+            const hanziModel = document.getElementById("hanziModelo");
+            const pinyinModel = document.getElementById("pinyinModelo");
+            const espModel = document.getElementById("espanolModelo");
+            const modoTxt = document.getElementById("modoTexto");
+            const estadoDiv = document.getElementById("estadoFrase");
+
+            if (!frases.length) {
+                idxSpan.textContent = "0 / 0";
+                hanziModel.textContent = "";
+                pinyinModel.textContent = "";
+                espModel.textContent = "";
+                modoTxt.textContent = "No hay frases definidas.";
+                estadoDiv.textContent = "";
+                return;
+            }
+
+            if (indice >= frases.length) indice = frases.length - 1;
+            if (indice < 0) indice = 0;
+
+            const f = frases[indice];
+            idxSpan.textContent = (indice + 1) + " / " + frases.length;
+
+            if (modo === "TODAS") {
+                hanziModel.textContent = f.hanzi;
+                pinyinModel.textContent = f.pinyin;
+                espModel.textContent = f.espanol;
+                modoTxt.textContent = "Modo: TODAS (ves todas las soluciones).";
+            } else if (modo === "CHINO") {
+                hanziModel.textContent = f.hanzi;
+                pinyinModel.textContent = "";
+                espModel.textContent = "";
+                modoTxt.textContent = "Modo: CHINO (ves el Hanzi; escribes el español).";
+            } else if (modo === "ESPAÑOL") {
+                hanziModel.textContent = "";
+                pinyinModel.textContent = "";
+                espModel.textContent = f.espanol;
+                modoTxt.textContent = "Modo: ESPAÑOL (ves el español; escribes Hanzi y Pinyin).";
+            }
+
+            estadoDiv.textContent = estadoFraseTexto(f);
+        }
+
+        function limpiarRespuestas() {
+            document.getElementById("hanziUsuario").value = "";
+            document.getElementById("pinyinUsuario").value = "";
+            document.getElementById("espanolUsuario").value = "";
+            document.getElementById("resultadoHanzi").textContent = "";
+            document.getElementById("resultadoPinyin").textContent = "";
+            document.getElementById("resultadoEspanol").textContent = "";
+        }
+
+        function modoTodas() { modo = "TODAS"; mostrarFrase(); }
+        function modoClean() { limpiarRespuestas(); }
+        function modoChino() { limpiarRespuestas(); modo = "CHINO"; mostrarFrase(); }
+        function modoEspanol() { limpiarRespuestas(); modo = "ESPAÑOL"; mostrarFrase(); }
+
+        function registrarCompletado(f, ahoraISO, prevAttempts) {
+            f.completions.push(ahoraISO);
+
+            const ahora = new Date(ahoraISO);
+            const doceHorasMs = 12 * 60 * 60 * 1000;
+            const sieteDiasMs = 7 * 24 * 60 * 60 * 1000;
+
+            const huboIntentoUlt12h = prevAttempts.some(ts => {
+                const t = new Date(ts);
+                const diff = ahora - t;
+                return diff > 0 && diff <= doceHorasMs;
+            });
+
+            const huboIntentoUlt7d = prevAttempts.some(ts => {
+                const t = new Date(ts);
+                const diff = ahora - t;
+                return diff > 0 && diff <= sieteDiasMs;
+            });
+
+            if (!huboIntentoUlt12h && !f.weeklyMastered) {
+                f.weeklyMastered = ahoraISO;
+            }
+
+            if (!huboIntentoUlt7d && !f.monthlyMastered) {
+                f.monthlyMastered = ahoraISO;
+            }
+
+            f.chinoDone = false;
+            f.espanolDone = false;
+        }
+
+        function comprobar() {
+            if (!frases.length) return;
+            const f = frases[indice];
+
+            const hanziUser = document.getElementById("hanziUsuario").value.trim();
+            const pinyinUserRaw = document.getElementById("pinyinUsuario").value.trim();
+            const espanolUser = document.getElementById("espanolUsuario").value.trim();
+
+            const ahoraISO = new Date().toISOString();
+            const prevAttempts = f.attempts.slice();
+            f.attempts.push(ahoraISO);
+
+            const resH = document.getElementById("resultadoHanzi");
+            const resP = document.getElementById("resultadoPinyin");
+            const resE = document.getElementById("resultadoEspanol");
+
+            resH.textContent = "";
+            resP.textContent = "";
+            resE.textContent = "";
+
+            let hanziCorrecto = false;
+            if (hanziUser) {
+                if (hanziUser === f.hanzi) {
+                    resH.textContent = "Correcto.";
+                    hanziCorrecto = true;
+                } else {
+                    resH.textContent = "Incorrecto. Solución: " + f.hanzi;
+                }
+            }
+
+            let pinyinCorrecto = false;
+            if (pinyinUserRaw) {
+                const pinyinConvertido = numericToMarkedPinyin(pinyinUserRaw);
+                const esperado = normalizarPinyin(f.pinyin);
+                const escritoNorm = normalizarPinyin(pinyinConvertido);
+
+                if (escritoNorm === esperado) {
+                    resP.textContent = "Correcto. (" + pinyinConvertido + ")";
+                    pinyinCorrecto = true;
+                } else {
+                    resP.textContent =
+                        "Incorrecto. Interpretado como: " + pinyinConvertido +
+                        " | Solución: " + f.pinyin;
+                }
+            }
+
+            let espanolCorrecto = false;
+            if (espanolUser) {
+                if (espanolUser === f.espanol) {
+                    resE.textContent = "Correcto.";
+                    espanolCorrecto = true;
+                } else {
+                    resE.textContent = "Incorrecto. Solución: " + f.espanol;
+                }
+            }
+
+            if (espanolCorrecto) {
+                f.chinoDone = true;
+            }
+            if (hanziCorrecto && pinyinCorrecto) {
+                f.espanolDone = true;
+            }
+
+            if (f.chinoDone && f.espanolDone) {
+                registrarCompletado(f, ahoraISO, prevAttempts);
+            }
+
+            guardarFrases();
+            renderTablaFrases();
+            mostrarFrase();
+        }
+
+        function siguienteFrase() {
+            if (!frases.length) return;
+            indice = (indice + 1) % frases.length;
+            limpiarRespuestas();
+            mostrarFrase();
+        }
+
+        function anteriorFrase() {
+            if (!frases.length) return;
+            indice = (indice - 1 + frases.length) % frases.length;
+            limpiarRespuestas();
+            mostrarFrase();
+        }
+
+        function togglePanelFrases() {
+            const panel = document.getElementById("panelFrases");
+            if (panel.style.display === "none" || panel.style.display === "") {
+                renderTablaFrases();
+                panel.style.display = "block";
+            } else {
+                panel.style.display = "none";
+            }
+        }
+
+        function renderTablaFrases() {
+            const tbody = document.getElementById("tablaFrasesBody");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+
+            frases.forEach((f, idx) => {
+                const tr = document.createElement("tr");
+
+                const lastAttempt = f.attempts.length ? f.attempts[f.attempts.length - 1] : null;
+                const lastCompletion = f.completions.length ? f.completions[f.completions.length - 1] : null;
+
+                tr.innerHTML = `
+                    <td>${idx + 1}</td>
+                    <td>
+                        <input class="inputTabla" type="text"
+                            value="${f.hanzi}"
+                            onchange="actualizarFrase(${idx}, 'hanzi', this.value)">
+                    </td>
+                    <td>
+                        <input class="inputTabla" type="text"
+                            value="${f.pinyin}"
+                            onchange="actualizarFrase(${idx}, 'pinyin', this.value)">
+                    </td>
+                    <td>
+                        <input class="inputTabla" type="text"
+                            value="${f.espanol}"
+                            onchange="actualizarFrase(${idx}, 'espanol', this.value)">
+                    </td>
+                    <td>${formatDateTime(lastAttempt)}</td>
+                    <td>${formatDateTime(lastCompletion)}</td>
+                    <td>${f.weeklyMastered ? formatDateTime(f.weeklyMastered) : ""}</td>
+                    <td>${f.monthlyMastered ? formatDateTime(f.monthlyMastered) : ""}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function actualizarFrase(ind, campo, valor) {
+            frases[ind][campo] = valor;
+            guardarFrases();
+            if (ind === indice) mostrarFrase();
+        }
+
+        function anadirFrase() {
+            const h = document.getElementById("nuevoHanzi").value.trim();
+            const p = document.getElementById("nuevoPinyin").value.trim();
+            const e = document.getElementById("nuevoEspanol").value.trim();
+
+            if (!h || !p || !e) {
+                alert("Rellena Hanzi, Pinyin y Español para añadir una nueva frase.");
+                return;
+            }
+
+            frases.push({
+                hanzi: h,
+                pinyin: p,
+                espanol: e,
+                attempts: [],
+                completions: [],
+                weeklyMastered: null,
+                monthlyMastered: null,
+                chinoDone: false,
+                espanolDone: false
+            });
+
+            document.getElementById("nuevoHanzi").value = "";
+            document.getElementById("nuevoPinyin").value = "";
+            document.getElementById("nuevoEspanol").value = "";
+
+            guardarFrases();
+            renderTablaFrases();
+            mostrarFrase();
+        }
+
+        function exportarHistorial() {
+            if (!frases.length) {
+                alert("No hay frases para exportar.");
+                return;
+            }
+
+            let lineas = [];
+            lineas.push([
+                "N","Hanzi","Pinyin","Espanol",
+                "NumIntentos","NumCompletados",
+                "UltimoIntento","UltimoCompletado",
+                "AprendidoSemanal","AprendidoMensual"
+            ].join(";"));
+
+            frases.forEach((f, idx) => {
+                const lastAttempt = f.attempts.length ? f.attempts[f.attempts.length - 1] : "";
+                const lastCompletion = f.completions.length ? f.completions[f.completions.length - 1] : "";
+
+                lineas.push([
+                    idx + 1,
+                    `"${(f.hanzi || "").replace(/"/g,'""')}"`,
+                    `"${(f.pinyin || "").replace(/"/g,'""')}"`,
+                    `"${(f.espanol || "").replace(/"/g,'""')}"`,
+                    f.attempts.length || 0,
+                    f.completions.length || 0,
+                    lastAttempt ? formatDateTime(lastAttempt) : "",
+                    lastCompletion ? formatDateTime(lastCompletion) : "",
+                    f.weeklyMastered ? formatDateTime(f.weeklyMastered) : "",
+                    f.monthlyMastered ? formatDateTime(f.monthlyMastered) : ""
+                ].join(";"));
+            });
+
+            const csv = lineas.join("\r\n");
+            const blob = new Blob([csv], {type: "text/csv;charset=utf-8;"});
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "historial_frases.csv";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Registro del service worker (PWA)
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("service-worker.js").catch(err => {
+                console.error("Error registrando service worker:", err);
+            });
+        }
+
+        mostrarFrase();
+    </script>
+</body>
+</html>
